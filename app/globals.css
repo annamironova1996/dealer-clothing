@@ -4,10 +4,18 @@
 
 @theme inline {
     --color-background: var(--background);
+    --color-lime-light: var(--lime-light);
+    --color-terracotta: var(--terracotta);
+    --color-gray-200: var(--gray-200);
+    --color-gray-300: var(--gray-300);
 }
 
 :root {
     --background: oklch(1 0 0);
+    --lime-light: oklch(0.9696 0.1748 110.3);
+    --terracotta: oklch(0.671866 0.215562 25.1161);
+    --gray-200: oklch(0.8761 0 0);
+    --gray-300: oklch(0.8015 0 0);
 }
 
 @layer base {
@@ -21,3 +29,10 @@
         font-family: var(--font-sans, 'Inter', sans-serif);
     }
 }
+@layer utilities {
+    .font-ruberoid-medium {
+        font-family: var(--font-ruberoid), sans-serif;
+        font-weight: 500;
+    }
+}
+
