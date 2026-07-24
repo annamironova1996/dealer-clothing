@@ -8,6 +8,11 @@
     --color-terracotta: var(--terracotta);
     --color-gray-200: var(--gray-200);
     --color-gray-300: var(--gray-300);
+    --color-gray-400: var(--gray-400);
+    --color-gray-500: var(--gray-500);
+    --color-gray-600: var(--gray-600);
+    --color-gray-700: var(--gray-700);
+    --color-peach: var(--peach);
 }
 
 :root {
@@ -16,6 +21,11 @@
     --terracotta: oklch(0.671866 0.215562 25.1161);
     --gray-200: oklch(0.8761 0 0);
     --gray-300: oklch(0.8015 0 0);
+    --gray-400: oklch(0.7668 0 0);
+    --gray-500: oklch(0.8452 0 0);
+    --gray-600: oklch(0.9401 0 0);
+    --gray-700: oklch(0.754 0 0);
+    --peach: oklch(0.7376 0.1622 34.03);
 }
 
 @layer base {
@@ -35,4 +45,3 @@
         font-weight: 500;
     }
 }
-
