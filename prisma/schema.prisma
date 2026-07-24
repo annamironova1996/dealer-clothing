@@ -1,0 +1,82 @@
+generator client {
+  provider = "prisma-client"
+  output   = "../lib/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model Category {
+  id        Int         @id @default(autoincrement())
+
+  title     String
+  slug      String      @unique
+
+  parentId  Int?
+  parent    Category?   @relation("CategoryHierarchy", fields: [parentId], references: [id])
+  children  Category[]  @relation("CategoryHierarchy")
+
+  products  Product[]
+  
+  createdAt DateTime    @default(now())
+  updatedAt DateTime    @updatedAt
+}
+
+model Product {
+  id        Int         @id @default(autoincrement())
+
+  title     String
+  slug      String      @unique
+  price     Float
+  description String?
+  imageUrl  String
+
+  categoryId Int
+  category   Category   @relation(fields: [categoryId], references: [id])
+
+  colors     ProductColor[]
+  
+  brandId    Int
+  brand      Brand      @relation(fields: [brandId], references: [id])
+
+  createdAt DateTime    @default(now())
+  updatedAt DateTime    @updatedAt
+
+  @@index([categoryId])
+  @@index([slug])
+}
+
+model Color {
+  id        Int         @id @default(autoincrement())
+
+  title     String
+  hex  String
+
+  products  ProductColor[]
+
+  createdAt DateTime    @default(now())
+  updatedAt DateTime    @updatedAt
+
+  @@unique([title, hex])
+}
+
+model ProductColor {
+  productId Int
+  colorId   Int
+  
+  product   Product @relation(fields: [productId], references: [id])
+  color     Color   @relation(fields: [colorId], references: [id])
+  
+  @@id([productId, colorId])
+}
+
+model Brand {
+  id        Int         @id @default(autoincrement())
+  title     String
+
+  products  Product[]
+
+  createdAt DateTime    @default(now())
+  updatedAt DateTime    @updatedAt
+}
