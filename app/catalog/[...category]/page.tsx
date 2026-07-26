@@ -1,27 +1,20 @@
-import { Container } from '@/components/shared/container';
-import { ProductCard } from '@/components/shared/product-card';
-import { Sidebar } from '@/components/shared/sidebar';
+import { Suspense } from 'react';
+import { CatalogContent } from '@/components/shared/catalog-content';
+import { SkeletonCatalogContent } from '@/components/skeletons/skeleton-catalog-content';
+import { SearchParamsType } from '@/lib/get-products';
 
-export default async function CatalogPage({ params }: { params: Promise<{ category: string }> }) {
-    const { category } = await params;
-
+export default async function CatalogPage({
+    params,
+    searchParams,
+}: {
+    params: Promise<{ category: string[] }>;
+    searchParams: Promise<SearchParamsType>;
+}) {
     return (
         <>
-            <section>Каталог {category}</section>
-            <section>
-                <Container>
-                    <div className="flex items-start gap-9 lg:gap-19">
-                        <Sidebar />
-
-                        <div className="grid grid-cols-2 xl:grid-cols-3 gap-2.5 md:gap-5 flex-1">
-                            <ProductCard />
-                            <ProductCard />
-                            <ProductCard />
-                            <ProductCard />
-                        </div>
-                    </div>
-                </Container>
-            </section>
+            <Suspense fallback={<SkeletonCatalogContent />}>
+                <CatalogContent params={params} searchParams={searchParams} />
+            </Suspense>
         </>
     );
 }

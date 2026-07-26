@@ -1,16 +1,20 @@
+import React, { Suspense } from 'react';
 import { ProductCategories } from './product-categories';
-import { ProductFilters } from './product-filters';
 import { SidebarBlock } from './sidebar-block';
 
-export function Sidebar() {
+type PropsType = {
+    children: React.ReactNode;
+};
+
+export function Sidebar({ children }: PropsType) {
     return (
         <aside className="hidden md:flex flex-col gap-[clamp(20px,2vw,50px)] w-57.75">
             <SidebarBlock title="Категории">
-                <ProductCategories />
+                <Suspense fallback={<>Загрузка</>}>
+                    <ProductCategories />
+                </Suspense>
             </SidebarBlock>
-            <SidebarBlock title="Фильтры">
-                <ProductFilters />
-            </SidebarBlock>
+            <SidebarBlock title="Фильтры">{children}</SidebarBlock>
         </aside>
     );
 }
