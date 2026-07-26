@@ -29,6 +29,7 @@ model Product {
   title     String
   slug      String      @unique
   price     Float
+  salePrice Float?
   description String?
   imageUrl  String
 
