@@ -1,13 +1,17 @@
-import { getProducts, SearchParamsType } from '@/lib/get-products';
+import { getCatalogData, SearchParamsType } from '@/lib/get-catalog-data';
 import { ProductCard } from './product-card';
+import { Product } from '@/lib/generated/prisma/client';
 
 type Props = {
-    category: string[];
-    searchParams: SearchParamsType;
+    products: Product[];
 };
 
-export async function ProductsGrid({ category, searchParams }: Props) {
-    const { products } = await getProducts(category, searchParams);
-
-    return products.map((product) => <ProductCard key={product.id} product={product} />);
+export async function ProductsGrid({ products }: Props) {
+    return (
+        <div className="grid grid-cols-2 xl:grid-cols-3 gap-2.5 md:gap-5 flex-1">
+            {products.map((product) => (
+                <ProductCard key={product.id} product={product} />
+            ))}
+        </div>
+    );
 }

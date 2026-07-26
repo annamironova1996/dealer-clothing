@@ -9,29 +9,36 @@ export type SearchParamsType = {
     priceTo?: string;
 };
 
-export async function getProducts(category: string[], searchParams?: SearchParamsType) {
+export async function getCatalogData(category: string[], searchParams?: SearchParamsType) {
     await delay(500);
 
     if (!category || category.length === 0) {
         notFound();
     }
 
-    const mainCategory = await prisma.category.findFirst({
+    /* Все категории */
+    const allCategories = await prisma.category.findMany({
         where: {
-            slug: category[0],
+            parentId: null,
         },
         include: {
             children: true,
         },
+        orderBy: {
+            id: 'asc',
+        },
     });
+
+    /* Главная категория */
+    const mainCategory = allCategories.find((c) => c.slug === category[0]);
 
     if (!mainCategory) {
         notFound();
     }
 
     let categoryIds: number[] = [];
-    let isSubcategory = false;
 
+    /* Подкатегория */
     if (category[1]) {
         const subCategory = await prisma.category.findFirst({
             where: {
@@ -43,11 +50,11 @@ export async function getProducts(category: string[], searchParams?: SearchParam
             notFound();
         }
         categoryIds = [subCategory.id];
-        isSubcategory = true;
     } else {
         categoryIds = [mainCategory.id, ...mainCategory.children.map((child) => child.id)];
     }
 
+    /* Диапазон цен */
     const priceRange = await prisma.product.aggregate({
         where: {
             categoryId: {
@@ -68,6 +75,7 @@ export async function getProducts(category: string[], searchParams?: SearchParam
     const colorIds = searchParams?.colors?.split(',').map(Number).filter(Boolean) || [];
     const brandIds = searchParams?.brands?.split(',').map(Number).filter(Boolean) || [];
 
+    /* Товары */
     const products = await prisma.product.findMany({
         where: {
             categoryId: {
@@ -106,6 +114,7 @@ export async function getProducts(category: string[], searchParams?: SearchParam
         },
     });
 
+    /* Цвета */
     const colorsMap = new Map<number, { id: number; title: string; hex: string }>();
     products.forEach((product) => {
         product.colors.forEach((pc) => {
@@ -120,6 +129,7 @@ export async function getProducts(category: string[], searchParams?: SearchParam
     });
     const colors = Array.from(colorsMap.values());
 
+    /* Бренды */
     const brandsMap = new Map<number, { id: number; title: string }>();
     products.forEach((product) => {
         if (product.brand && !brandsMap.has(product.brand.id)) {
@@ -141,7 +151,6 @@ export async function getProducts(category: string[], searchParams?: SearchParam
                 max: maxPrice,
             },
         },
-        isSubcategory,
-        mainCategory,
+        categories: allCategories,
     };
 }

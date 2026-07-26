@@ -1,12 +1,16 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { categories } from '@/constants';
 import { ChevronDown } from 'lucide-react';
 import Link from 'next/link';
 import { useParams } from 'next/navigation';
+import { CategoryWithChildren } from './sidebar';
 
-export function ProductCategories() {
+type PropsType = {
+    categories: CategoryWithChildren[];
+};
+
+export function ProductCategories({ categories }: PropsType) {
     const params = useParams();
     const categorySegments = (params.category as string[]) || [];
     const categorySlug = categorySegments[0];
@@ -24,14 +28,6 @@ export function ProductCategories() {
     };
 
     const [openCategories, setOpenCategories] = useState<number[]>(getInitialOpenCategories);
-
-    const hasChildrenInCategory = (categoryId: number) => {
-        return categories.some((child) => child.parentId === categoryId);
-    };
-
-    const getChildren = (categoryId: number) => {
-        return categories.filter((child) => child.parentId === categoryId);
-    };
 
     const toggleCategory = (categoryId: number) => {
         setOpenCategories((prev) =>
@@ -70,16 +66,16 @@ export function ProductCategories() {
                             <div className="flex items-center gap-[clamp(6px,2vw,10px)]">
                                 <Link
                                     href={`/catalog/${category.slug}`}
-                                    className={`transition-opacity ${
+                                    className={`text-[20px] transition-opacity duration-300 ${
                                         categorySlug === category.slug
-                                            ? 'opacity-60'
+                                            ? 'font-semibold'
                                             : 'hover:opacity-60'
                                     }`}
                                 >
-                                    {category.name}
+                                    {category.title}
                                 </Link>
 
-                                {hasChildrenInCategory(category.id) && (
+                                {category.children.length && (
                                     <button
                                         type="button"
                                         onClick={() => toggleCategory(category.id)}
@@ -96,26 +92,26 @@ export function ProductCategories() {
                                 )}
                             </div>
 
-                            {hasChildrenInCategory(category.id) && (
+                            {category.children.length && (
                                 <div
                                     className={`overflow-hidden transition-all duration-300 ease-in-out ${
                                         isCategoryOpen(category.id)
-                                            ? 'max-h-[1000px] opacity-100'
+                                            ? 'max-h-[1000px] opacity-100 border-b border-gray-200'
                                             : 'max-h-0 opacity-0'
                                     }`}
                                 >
-                                    <ul className="py-[15px] space-y-[10px]">
-                                        {getChildren(category.id).map((child) => (
-                                            <li key={child.id}>
+                                    <ul className="py-[10px] mb-[5px] flex flex-col gap-[10px]">
+                                        {category.children.map((child) => (
+                                            <li key={child.id} className="contents">
                                                 <Link
                                                     href={`/catalog/${category.slug}/${child.slug}`}
-                                                    className={`transition-opacity ${
+                                                    className={`text-[16px] tracking-[-0.01em] transition-opacity ${
                                                         categorySegments[1] === child.slug
-                                                            ? 'opacity-60'
+                                                            ? 'font-semibold'
                                                             : 'hover:opacity-60'
                                                     }`}
                                                 >
-                                                    {child.name}
+                                                    {child.title}
                                                 </Link>
                                             </li>
                                         ))}

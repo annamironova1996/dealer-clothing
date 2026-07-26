@@ -42,9 +42,16 @@ export function FilterItems({ items, searchPlaceholder, type, limit = 5 }: Props
     }, [filteredItems, isShowAll]);
 
     const hasMoreItems = filteredItems.length > limit;
+    const shouldShowSearch = items.length > limit;
 
     const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
-        setSearchValue(e.target.value);
+        const value = e.target.value;
+        setSearchValue(value);
+        if (value.trim()) {
+            setIsShowAll(true);
+        } else {
+            setIsShowAll(false);
+        }
     };
 
     const handleToggle = (id: string) => {
@@ -57,16 +64,18 @@ export function FilterItems({ items, searchPlaceholder, type, limit = 5 }: Props
 
     return (
         <>
-            <div className="relative">
-                <Input
-                    type="text"
-                    className="border border-gray-400 rounded-lg pl-7"
-                    placeholder={searchPlaceholder}
-                    value={searchValue}
-                    onChange={handleSearch}
-                />
-                <Search className="w-3.5 h-4.75 absolute left-2 top-1/2 -translate-y-1/2 rotate-90 text-gray-700 " />
-            </div>
+            {shouldShowSearch && (
+                <div className="relative">
+                    <Input
+                        type="text"
+                        className="border border-gray-400 rounded-lg pl-7"
+                        placeholder={searchPlaceholder}
+                        value={searchValue}
+                        onChange={handleSearch}
+                    />
+                    <Search className="w-3.5 h-4.75 absolute left-2 top-1/2 -translate-y-1/2 rotate-90 text-gray-700 " />
+                </div>
+            )}
             <ul className="space-y-1.25 mt-2.5">
                 {visibleItems.map((item) => {
                     const itemId = String(item.id);

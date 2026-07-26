@@ -12,6 +12,7 @@
     --color-gray-500: var(--gray-500);
     --color-gray-600: var(--gray-600);
     --color-gray-700: var(--gray-700);
+    --color-gray-800: var(--gray-800);
     --color-peach: var(--peach);
 }
 
@@ -25,6 +26,7 @@
     --gray-500: oklch(0.8452 0 0);
     --gray-600: oklch(0.9401 0 0);
     --gray-700: oklch(0.754 0 0);
+    --gray-800: oklch(0.6567 0 0);
     --peach: oklch(0.7376 0.1622 34.03);
 }
 

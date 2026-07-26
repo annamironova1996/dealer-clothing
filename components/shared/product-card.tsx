@@ -9,17 +9,14 @@ type Props = {
 
 export function ProductCard({ product }: Props) {
     const isFavorite = false;
-    const isHot = false;
-    const isPreLoved = false;
-    const isOnSale = true;
-    const salePercent = 40;
 
     return (
         <div className="relative py-[clamp(8px,2vw,12px)] px-[clamp(12px,2vw,15px)] border border-gray-200 rounded-[clamp(9px,2vw,13px)] flex flex-col justify-end min-h-51.25 md:min-h-63.75 lg:min-h-74.5">
             <div className="absolute w-full top-0 left-0 right-0 flex justify-between items-center z-1 py-[clamp(8px,2vw,12px)] px-[clamp(12px,2vw,15px)]">
-                {isHot && <Badge variant="product_hot">hot</Badge>}
-                {isOnSale && <Badge variant="product_sale">-{salePercent}%</Badge>}
-                {isPreLoved && <Badge variant="product_pre_loved">pre-loved</Badge>}
+                {product.isHot && <Badge variant="product_hot">hot</Badge>}
+                {product.isNew && <Badge variant="product_hot">new</Badge>}
+                {product.isOnSale && <Badge variant="product_sale">-{product.salePercent}%</Badge>}
+                {product.isPreLoved && <Badge variant="product_pre_loved">pre-loved</Badge>}
 
                 <button
                     type="button"
@@ -40,7 +37,7 @@ export function ProductCard({ product }: Props) {
                 </h3>
             </Link>
             <p className="text-center tracking-widest sm:tracking-normal font-ruberoid-medium text-[clamp(10px,2vw,15px)]">
-                {product.price} руб
+                {product.salePrice ? product.salePrice : product.price} руб
             </p>
         </div>
     );

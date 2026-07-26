@@ -4,7 +4,7 @@ import { Container } from '../shared/container';
 
 export function SkeletonCatalogContent() {
     return (
-        <section>
+        <section className="mt-[clamp(27px,2vw,57px)]">
             <Container>
                 <div className="flex items-start gap-9 lg:gap-19">
                     <SkeletonSidebar />
