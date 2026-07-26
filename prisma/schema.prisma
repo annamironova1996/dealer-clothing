@@ -32,6 +32,12 @@ model Product {
   description String?
   imageUrl  String
 
+  isHot       Boolean   @default(false)
+  isNew       Boolean   @default(false)
+  isPreLoved  Boolean   @default(false)
+  isOnSale    Boolean   @default(false)
+  salePercent Int       @default(0)
+
   categoryId Int
   category   Category   @relation(fields: [categoryId], references: [id])
 
