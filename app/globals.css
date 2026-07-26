@@ -4,10 +4,30 @@
 
 @theme inline {
     --color-background: var(--background);
+    --color-lime-light: var(--lime-light);
+    --color-terracotta: var(--terracotta);
+    --color-gray-200: var(--gray-200);
+    --color-gray-300: var(--gray-300);
+    --color-gray-400: var(--gray-400);
+    --color-gray-500: var(--gray-500);
+    --color-gray-600: var(--gray-600);
+    --color-gray-700: var(--gray-700);
+    --color-gray-800: var(--gray-800);
+    --color-peach: var(--peach);
 }
 
 :root {
     --background: oklch(1 0 0);
+    --lime-light: oklch(0.9696 0.1748 110.3);
+    --terracotta: oklch(0.671866 0.215562 25.1161);
+    --gray-200: oklch(0.8761 0 0);
+    --gray-300: oklch(0.8015 0 0);
+    --gray-400: oklch(0.7668 0 0);
+    --gray-500: oklch(0.8452 0 0);
+    --gray-600: oklch(0.9401 0 0);
+    --gray-700: oklch(0.754 0 0);
+    --gray-800: oklch(0.6567 0 0);
+    --peach: oklch(0.7376 0.1622 34.03);
 }
 
 @layer base {
@@ -19,5 +39,11 @@
     body {
         background-color: var(--background);
         font-family: var(--font-sans, 'Inter', sans-serif);
+    }
+}
+@layer utilities {
+    .font-ruberoid-medium {
+        font-family: var(--font-ruberoid), sans-serif;
+        font-weight: 500;
     }
 }
